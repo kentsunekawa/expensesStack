@@ -1,0 +1,12 @@
+docs/
+build/
+public/
+**/coverage/
+**/node_modules/
+node_modules/
+node_modules
+**/*.min.js
+*.config.js
+.*lintrc.js
+src/operations/types.d.ts
+cypress/src/operations/types.d.ts
