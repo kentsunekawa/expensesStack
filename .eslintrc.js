@@ -1,7 +1,8 @@
 module.exports = {
   env: { browser: true, es2020: true, node: true },
   extends: [
-    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'airbnb',
     'airbnb-typescript',
     'airbnb/hooks',
@@ -9,27 +10,38 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
     'plugin:@typescript-eslint/recommended',
-    'plugin:react-hooks/recommended',
-    'prettier'
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'prettier',
   ],
   parser: '@typescript-eslint/parser',
-  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
-  plugins: ['react-refresh'],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project: './tsconfig.json',
+  },
+  plugins: [
+    'react-refresh',
+    '@typescript-eslint',
+    'import',
+    'jsx-a11y',
+    'react',
+    'react-hooks',
+  ],
   rules: {
     'react-refresh/only-export-components': 'warn',
     'no-void': [
       'error',
       {
-        allowAsStatement: true
-      }
+        allowAsStatement: true,
+      },
     ],
     'padding-line-between-statements': [
       'error',
       {
         blankLine: 'always',
         prev: '*',
-        next: 'return'
-      }
+        next: 'return',
+      },
     ],
     semi: ['error', 'never', { beforeStatementContinuationChars: 'never' }],
     'semi-spacing': ['error', { after: true, before: false }],
@@ -40,7 +52,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'react/function-component-definition': [
       2,
-      { namedComponents: 'arrow-function' }
+      { namedComponents: 'arrow-function' },
     ],
     'react/react-in-jsx-scope': 'off',
     'react/jsx-props-no-spreading': ['off'],
@@ -48,6 +60,8 @@ module.exports = {
     'react/require-default-props': 'off',
     'import/no-default-export': 'error',
     'react/no-unused-prop-types': 'warn',
-    'no-underscore-dangle': 'off'
-  }
+    'no-underscore-dangle': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+  },
 }
