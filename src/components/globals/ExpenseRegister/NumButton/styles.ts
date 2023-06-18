@@ -4,22 +4,29 @@ import { css } from 'styled-components'
 // import from this project
 import { StyleBaseData } from 'src/hooks'
 
-export const createStyles = ({ theme }: StyleBaseData) => {
-  return {
-    container: css`
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      background: ${theme.palette.primary.main};
-      border-radius: 50%;
-
-      &:before {
-        content: '';
-        display: block;
-        padding-top: 100%;
-      }
-    `,
-  }
-}
+export const createStyles = ({ theme }: StyleBaseData) => ({
+  container: css`
+    position: relative;
+    width: 100%;
+    border: 1px solid ${theme.palette.primary.main};
+    border-radius: 50%;
+    &:before {
+      content: '';
+      display: block;
+      padding-top: 100%;
+    }
+    &:active {
+      opacity: 0.3;
+    }
+  `,
+  text: css`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: ${theme.palette.primary.main};
+  `,
+})

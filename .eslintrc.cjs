@@ -58,10 +58,27 @@ module.exports = {
     'react/jsx-props-no-spreading': ['off'],
     'react/jsx-no-useless-fragment': 'off',
     'react/require-default-props': 'off',
-    'import/no-default-export': 'error',
+    'import/no-default-export': 'off',
     'react/no-unused-prop-types': 'warn',
     'no-underscore-dangle': 'off',
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 'error',
+    'react/no-unknown-property': ['error', { ignore: ['css'] }],
+  },
+  overrides: [
+    {
+      files: ['*.tsx'],
+      rules: {
+        'react/prop-types': 'off',
+      },
+    },
+  ],
+  settings: {
+    'import/resolver': {
+      typescript: {},
+      alias: {
+        map: [['./src']],
+      },
+    },
   },
 }

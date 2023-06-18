@@ -18,8 +18,15 @@ export const NumButton: React.FC<Props> = ({ disabled, num, onClick }) => {
   const { styles } = useStyle(createStyles)
 
   return (
-    <button disabled={disabled} css={styles.container} onClick={onClick}>
-      <Heading size='h3'>{num}</Heading>
+    <button
+      disabled={disabled}
+      css={styles.container}
+      onClick={onClick}
+      type='button'
+    >
+      <Heading size='h3' css={styles.text}>
+        {num}
+      </Heading>
     </button>
   )
 }

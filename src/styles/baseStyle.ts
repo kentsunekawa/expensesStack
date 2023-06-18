@@ -4,7 +4,6 @@ import { baseFont } from 'src/styles/mixins'
 export const baseStyle = css`
   body {
     ${baseFont()}
-    color: ${({ theme }) => theme.palette.text.primary};
   }
 
   * {
