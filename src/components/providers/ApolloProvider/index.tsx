@@ -15,6 +15,6 @@ const client = new ApolloClient({
   cache,
 })
 
-export const ApolloProvider: React.FC<Props> = ({ children }) => {
-  return <Provider client={client}>{children}</Provider>
-}
+export const ApolloProvider: React.FC<Props> = ({ children }) => (
+  <Provider client={client}>{children}</Provider>
+)

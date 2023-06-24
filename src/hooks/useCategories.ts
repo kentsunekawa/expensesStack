@@ -1,37 +1,23 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 
-import { FetchStatus } from 'src/types'
-import { categories as mockCategories } from 'src/mock/mockData/categories'
+import { useGetCategoriesLazyQuery } from 'src/operations/queries/__generated__/GetCategories'
 
 export const useCategories = () => {
-  const [fetchStatus, setIsFetchStatus] = useState<FetchStatus>({
-    isLoading: false,
-    isError: false,
-  })
-  const [data, setData] = useState<{
-    categories: {
-      id: string
-      name: string
-    }[]
-  } | null>(null)
+  const [getCategories, { data, loading, error }] = useGetCategoriesLazyQuery()
 
   const doGetCategories = useCallback(() => {
-    setIsFetchStatus({
-      isError: false,
-      isLoading: true,
-    })
-    setTimeout(() => {
-      setData({
-        categories: mockCategories,
-      })
-      setIsFetchStatus({
-        isError: false,
-        isLoading: false,
-      })
-    }, 800)
-  }, [])
+    void getCategories()
+  }, [getCategories])
 
   const categories = useMemo(() => data?.categories ?? null, [data])
+
+  const fetchStatus = useMemo(
+    () => ({
+      isLoading: loading,
+      isError: !!error,
+    }),
+    [loading, error],
+  )
 
   return { categories, doGetCategories, fetchStatus }
 }

@@ -5,7 +5,14 @@ import { css } from 'styled-components'
 import { StyleBaseData } from 'src/hooks'
 
 export const createStyles = ({ theme }: StyleBaseData) => ({
-  container: css``,
+  container: css`
+    padding: 16px;
+  `,
+  expensesArea: css`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 0;
+  `,
   goToRegiserButtonPosi: css`
     position: fixed;
     right: 16px;
@@ -21,6 +28,9 @@ export const createStyles = ({ theme }: StyleBaseData) => ({
     position: fixed;
     left: 0;
     bottom: 0;
+    width: 100%;
+  `,
+  expense: css`
     width: 100%;
   `,
 })

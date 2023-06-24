@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "generate": "graphql-codegen --config codegen.ts",
+    "generate": "graphql-codegen --config codegen.yml",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -23,6 +23,7 @@
     "graphql": "^16.6.0",
     "msw": "^1.2.2",
     "notistack": "^3.0.1",
+    "polished": "^4.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.12.1",

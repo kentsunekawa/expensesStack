@@ -6,14 +6,7 @@ import { StyleBaseData } from 'src/hooks'
 
 export const createStyles = ({ theme }: StyleBaseData) => ({
   container: css`
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 1000;
     background: ${theme.palette.background.default};
-    overflow-y: scroll;
   `,
   inner: css`
     width: 100%;

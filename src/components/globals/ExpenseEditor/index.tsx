@@ -1,6 +1,6 @@
 // import from libraries
 import 'styled-components/macro'
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import {
   FormControl,
   Select,
@@ -22,39 +22,36 @@ import { Heading } from 'src/components/parts/Texts'
 import { NumButton } from './NumButton'
 import { createStyles } from './styles'
 
-type Expense = {
-  date: Date
-  category: { id: string; name: string } | null
-  memo: string
+type Mode = 'create' | 'edit'
+
+export type ExpensesInputs = {
   amount: string
+  category: { id: string; name: string } | null
+  date: Date
+  memo: string
 }
 
 type Props = {
-  expense: Expense | null
+  inputs: ExpensesInputs
+  mode: Mode
+  onSubmit: (inputs: ExpensesInputs) => void
 }
 
-type Mode = 'create' | 'edit'
-
-const initialInputs = {
-  date: new Date(),
-  category: null,
-  memo: '',
-  amount: '0',
-}
-
-export const ExpenseRegister: React.FC<Props> = ({ expense }) => {
+export const ExpenseEditor: React.FC<Props> = ({
+  mode: _mode,
+  inputs: _inputs,
+  onSubmit,
+}) => {
   const navigate = useNavigate()
 
   const { styles } = useStyle(createStyles)
 
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  const [inputs, setInputs] = useState<Expense>(expense ?? initialInputs)
-  const [mode] = useState<Mode>(expense ? 'edit' : 'create')
+  const [inputs, setInputs] = useState<ExpensesInputs>(_inputs)
+  const [mode] = useState<Mode>(_mode)
 
   const { categories, fetchStatus, doGetCategories } = useCategories()
 
-  const handleChange = useCallback(
+  const handleChangeCategory = useCallback(
     (e: SelectChangeEvent) => {
       if (categories) {
         setInputs((prev) => ({
@@ -96,21 +93,12 @@ export const ExpenseRegister: React.FC<Props> = ({ expense }) => {
     doGetCategories()
   }, [doGetCategories])
 
-  useEffect(() => {
-    const setHeight = () => {
-      if (containerRef.current && window) {
-        containerRef.current.style.height = `${window.innerHeight}px`
-      }
-    }
-    setHeight()
-
-    window.addEventListener('resize', setHeight)
-
-    return () => window.addEventListener('remove', setHeight)
-  }, [])
+  const hanldeClickSubmitButton = useCallback(() => {
+    onSubmit(inputs)
+  }, [inputs, onSubmit])
 
   return (
-    <div css={styles.container} ref={containerRef}>
+    <div css={styles.container}>
       <div css={styles.inner}>
         <div css={styles.row.container}>
           <div css={styles.numDisplayArea.containre}>
@@ -144,7 +132,7 @@ export const ExpenseRegister: React.FC<Props> = ({ expense }) => {
                   labelId='category'
                   value={inputs.category?.id ?? ''}
                   label='Category'
-                  onChange={handleChange}
+                  onChange={handleChangeCategory}
                 >
                   {categories?.map(({ id, name }) => (
                     <MenuItem value={id} key={id}>
@@ -252,6 +240,7 @@ export const ExpenseRegister: React.FC<Props> = ({ expense }) => {
             size='large'
             variant='outlined'
             css={styles.submitButton}
+            onClick={hanldeClickSubmitButton}
           >
             {mode === 'create' ? 'Register' : 'Update'}
           </Button>

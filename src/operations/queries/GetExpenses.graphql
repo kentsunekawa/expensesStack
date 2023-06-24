@@ -1,0 +1,15 @@
+query GetExpenses {
+  expenses {
+    amout
+    category {
+      color {
+        hex
+      }
+      id
+      name
+    }
+    memo
+    id
+    date
+  }
+}
