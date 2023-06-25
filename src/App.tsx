@@ -6,6 +6,7 @@ import { LocalizationProvider } from 'src/components/providers/LocalizationProvi
 import { ThemeProvider } from 'src/components/providers/ThemeProvider'
 import { ApolloProvider } from 'src/components/providers/ApolloProvider'
 import { SnackbarProvider } from 'src/components/providers/SnackbarProvider'
+import { ScreenLoading } from 'src/components/globals/ScreenLoading'
 
 const App: React.FC = () => (
   <>
@@ -15,6 +16,7 @@ const App: React.FC = () => (
           <CssBaseline />
           <SnackbarProvider>
             <GlobalStyle />
+            <ScreenLoading />
             <Routes />
           </SnackbarProvider>
         </ThemeProvider>

@@ -1220,7 +1220,7 @@ export type DocumentVersion = {
 
 export type Expense = Node & {
   __typename?: 'Expense';
-  amout: Scalars['Int']['output'];
+  amount: Scalars['Int']['output'];
   category?: Maybe<Category>;
   /** The time the document was created */
   createdAt: Scalars['DateTime']['output'];
@@ -1315,7 +1315,7 @@ export type ExpenseConnection = {
 };
 
 export type ExpenseCreateInput = {
-  amout: Scalars['Int']['input'];
+  amount: Scalars['Int']['input'];
   category?: InputMaybe<CategoryCreateOneInlineInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   date: Scalars['Date']['input'];
@@ -1356,21 +1356,21 @@ export type ExpenseManyWhereInput = {
   OR?: InputMaybe<Array<ExpenseWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']['input']>;
-  amout?: InputMaybe<Scalars['Int']['input']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
   /** All values greater than the given value. */
-  amout_gt?: InputMaybe<Scalars['Int']['input']>;
+  amount_gt?: InputMaybe<Scalars['Int']['input']>;
   /** All values greater than or equal the given value. */
-  amout_gte?: InputMaybe<Scalars['Int']['input']>;
+  amount_gte?: InputMaybe<Scalars['Int']['input']>;
   /** All values that are contained in given list. */
-  amout_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   /** All values less than the given value. */
-  amout_lt?: InputMaybe<Scalars['Int']['input']>;
+  amount_lt?: InputMaybe<Scalars['Int']['input']>;
   /** All values less than or equal the given value. */
-  amout_lte?: InputMaybe<Scalars['Int']['input']>;
+  amount_lte?: InputMaybe<Scalars['Int']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  amout_not?: InputMaybe<Scalars['Int']['input']>;
+  amount_not?: InputMaybe<Scalars['Int']['input']>;
   /** All values that are not contained in given list. */
-  amout_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   category?: InputMaybe<CategoryWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
@@ -1482,8 +1482,8 @@ export type ExpenseManyWhereInput = {
 };
 
 export enum ExpenseOrderByInput {
-  AmoutAsc = 'amout_ASC',
-  AmoutDesc = 'amout_DESC',
+  AmountAsc = 'amount_ASC',
+  AmountDesc = 'amount_DESC',
   CreatedAtAsc = 'createdAt_ASC',
   CreatedAtDesc = 'createdAt_DESC',
   DateAsc = 'date_ASC',
@@ -1499,7 +1499,7 @@ export enum ExpenseOrderByInput {
 }
 
 export type ExpenseUpdateInput = {
-  amout?: InputMaybe<Scalars['Int']['input']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
   category?: InputMaybe<CategoryUpdateOneInlineInput>;
   date?: InputMaybe<Scalars['Date']['input']>;
   memo?: InputMaybe<Scalars['String']['input']>;
@@ -1523,7 +1523,7 @@ export type ExpenseUpdateManyInlineInput = {
 };
 
 export type ExpenseUpdateManyInput = {
-  amout?: InputMaybe<Scalars['Int']['input']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
   date?: InputMaybe<Scalars['Date']['input']>;
   memo?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1587,21 +1587,21 @@ export type ExpenseWhereInput = {
   OR?: InputMaybe<Array<ExpenseWhereInput>>;
   /** Contains search across all appropriate fields. */
   _search?: InputMaybe<Scalars['String']['input']>;
-  amout?: InputMaybe<Scalars['Int']['input']>;
+  amount?: InputMaybe<Scalars['Int']['input']>;
   /** All values greater than the given value. */
-  amout_gt?: InputMaybe<Scalars['Int']['input']>;
+  amount_gt?: InputMaybe<Scalars['Int']['input']>;
   /** All values greater than or equal the given value. */
-  amout_gte?: InputMaybe<Scalars['Int']['input']>;
+  amount_gte?: InputMaybe<Scalars['Int']['input']>;
   /** All values that are contained in given list. */
-  amout_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  amount_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   /** All values less than the given value. */
-  amout_lt?: InputMaybe<Scalars['Int']['input']>;
+  amount_lt?: InputMaybe<Scalars['Int']['input']>;
   /** All values less than or equal the given value. */
-  amout_lte?: InputMaybe<Scalars['Int']['input']>;
+  amount_lte?: InputMaybe<Scalars['Int']['input']>;
   /** Any other value that exists and is not equal to the given value. */
-  amout_not?: InputMaybe<Scalars['Int']['input']>;
+  amount_not?: InputMaybe<Scalars['Int']['input']>;
   /** All values that are not contained in given list. */
-  amout_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  amount_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   category?: InputMaybe<CategoryWhereInput>;
   createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   /** All values greater than the given value. */
@@ -4181,22 +4181,206 @@ export enum _SystemDateTimeFieldVariation {
   Localization = 'localization'
 }
 
+export type CreateExpenseMutationVariables = Exact<{
+  data: ExpenseCreateInput;
+}>;
+
+
+export type CreateExpenseMutation = { __typename?: 'Mutation', createExpense?: { __typename?: 'Expense', id: string } | null };
+
+export type DeleteExpenseMutationVariables = Exact<{
+  where: ExpenseWhereUniqueInput;
+}>;
+
+
+export type DeleteExpenseMutation = { __typename?: 'Mutation', deleteExpense?: { __typename?: 'Expense', id: string } | null };
+
+export type PublishExpenseMutationVariables = Exact<{
+  where: ExpenseWhereUniqueInput;
+}>;
+
+
+export type PublishExpenseMutation = { __typename?: 'Mutation', publishExpense?: { __typename?: 'Expense', amount: number, memo?: string | null, id: string, date: string, category?: { __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null } | null } | null };
+
+export type UpdateExpenseMutationVariables = Exact<{
+  data: ExpenseUpdateInput;
+  where: ExpenseWhereUniqueInput;
+}>;
+
+
+export type UpdateExpenseMutation = { __typename?: 'Mutation', updateExpense?: { __typename?: 'Expense', id: string } | null };
+
 export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string }> };
+export type GetCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null }> };
 
-export type GetExpensesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetExpenseQueryVariables = Exact<{
+  where: ExpenseWhereUniqueInput;
+}>;
 
 
-export type GetExpensesQuery = { __typename?: 'Query', expenses: Array<{ __typename?: 'Expense', amout: number, memo?: string | null, id: string, date: string, category?: { __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null } | null }> };
+export type GetExpenseQuery = { __typename?: 'Query', expense?: { __typename?: 'Expense', amount: number, memo?: string | null, id: string, date: string, category?: { __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null } | null } | null };
+
+export type GetExpensesQueryVariables = Exact<{
+  where?: InputMaybe<ExpenseWhereInput>;
+}>;
 
 
+export type GetExpensesQuery = { __typename?: 'Query', expenses: Array<{ __typename?: 'Expense', amount: number, memo?: string | null, id: string, date: string, category?: { __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null } | null }> };
+
+
+export const CreateExpenseDocument = gql`
+    mutation CreateExpense($data: ExpenseCreateInput!) {
+  createExpense(data: $data) {
+    id
+  }
+}
+    `;
+export type CreateExpenseMutationFn = Apollo.MutationFunction<CreateExpenseMutation, CreateExpenseMutationVariables>;
+
+/**
+ * __useCreateExpenseMutation__
+ *
+ * To run a mutation, you first call `useCreateExpenseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateExpenseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createExpenseMutation, { data, loading, error }] = useCreateExpenseMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useCreateExpenseMutation(baseOptions?: Apollo.MutationHookOptions<CreateExpenseMutation, CreateExpenseMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateExpenseMutation, CreateExpenseMutationVariables>(CreateExpenseDocument, options);
+      }
+export type CreateExpenseMutationHookResult = ReturnType<typeof useCreateExpenseMutation>;
+export type CreateExpenseMutationResult = Apollo.MutationResult<CreateExpenseMutation>;
+export type CreateExpenseMutationOptions = Apollo.BaseMutationOptions<CreateExpenseMutation, CreateExpenseMutationVariables>;
+export const DeleteExpenseDocument = gql`
+    mutation DeleteExpense($where: ExpenseWhereUniqueInput!) {
+  deleteExpense(where: $where) {
+    id
+  }
+}
+    `;
+export type DeleteExpenseMutationFn = Apollo.MutationFunction<DeleteExpenseMutation, DeleteExpenseMutationVariables>;
+
+/**
+ * __useDeleteExpenseMutation__
+ *
+ * To run a mutation, you first call `useDeleteExpenseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteExpenseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteExpenseMutation, { data, loading, error }] = useDeleteExpenseMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useDeleteExpenseMutation(baseOptions?: Apollo.MutationHookOptions<DeleteExpenseMutation, DeleteExpenseMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteExpenseMutation, DeleteExpenseMutationVariables>(DeleteExpenseDocument, options);
+      }
+export type DeleteExpenseMutationHookResult = ReturnType<typeof useDeleteExpenseMutation>;
+export type DeleteExpenseMutationResult = Apollo.MutationResult<DeleteExpenseMutation>;
+export type DeleteExpenseMutationOptions = Apollo.BaseMutationOptions<DeleteExpenseMutation, DeleteExpenseMutationVariables>;
+export const PublishExpenseDocument = gql`
+    mutation PublishExpense($where: ExpenseWhereUniqueInput!) {
+  publishExpense(where: $where, to: [PUBLISHED]) {
+    amount
+    category {
+      color {
+        hex
+      }
+      id
+      name
+    }
+    memo
+    id
+    date
+  }
+}
+    `;
+export type PublishExpenseMutationFn = Apollo.MutationFunction<PublishExpenseMutation, PublishExpenseMutationVariables>;
+
+/**
+ * __usePublishExpenseMutation__
+ *
+ * To run a mutation, you first call `usePublishExpenseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `usePublishExpenseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [publishExpenseMutation, { data, loading, error }] = usePublishExpenseMutation({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function usePublishExpenseMutation(baseOptions?: Apollo.MutationHookOptions<PublishExpenseMutation, PublishExpenseMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<PublishExpenseMutation, PublishExpenseMutationVariables>(PublishExpenseDocument, options);
+      }
+export type PublishExpenseMutationHookResult = ReturnType<typeof usePublishExpenseMutation>;
+export type PublishExpenseMutationResult = Apollo.MutationResult<PublishExpenseMutation>;
+export type PublishExpenseMutationOptions = Apollo.BaseMutationOptions<PublishExpenseMutation, PublishExpenseMutationVariables>;
+export const UpdateExpenseDocument = gql`
+    mutation UpdateExpense($data: ExpenseUpdateInput!, $where: ExpenseWhereUniqueInput!) {
+  updateExpense(data: $data, where: $where) {
+    id
+  }
+}
+    `;
+export type UpdateExpenseMutationFn = Apollo.MutationFunction<UpdateExpenseMutation, UpdateExpenseMutationVariables>;
+
+/**
+ * __useUpdateExpenseMutation__
+ *
+ * To run a mutation, you first call `useUpdateExpenseMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateExpenseMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateExpenseMutation, { data, loading, error }] = useUpdateExpenseMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useUpdateExpenseMutation(baseOptions?: Apollo.MutationHookOptions<UpdateExpenseMutation, UpdateExpenseMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateExpenseMutation, UpdateExpenseMutationVariables>(UpdateExpenseDocument, options);
+      }
+export type UpdateExpenseMutationHookResult = ReturnType<typeof useUpdateExpenseMutation>;
+export type UpdateExpenseMutationResult = Apollo.MutationResult<UpdateExpenseMutation>;
+export type UpdateExpenseMutationOptions = Apollo.BaseMutationOptions<UpdateExpenseMutation, UpdateExpenseMutationVariables>;
 export const GetCategoriesDocument = gql`
     query GetCategories {
   categories {
     id
     name
+    color {
+      hex
+    }
   }
 }
     `;
@@ -4227,10 +4411,55 @@ export function useGetCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQuery>;
 export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
 export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
+export const GetExpenseDocument = gql`
+    query GetExpense($where: ExpenseWhereUniqueInput!) {
+  expense(where: $where) {
+    amount
+    category {
+      color {
+        hex
+      }
+      id
+      name
+    }
+    memo
+    id
+    date
+  }
+}
+    `;
+
+/**
+ * __useGetExpenseQuery__
+ *
+ * To run a query within a React component, call `useGetExpenseQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetExpenseQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetExpenseQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetExpenseQuery(baseOptions: Apollo.QueryHookOptions<GetExpenseQuery, GetExpenseQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetExpenseQuery, GetExpenseQueryVariables>(GetExpenseDocument, options);
+      }
+export function useGetExpenseLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetExpenseQuery, GetExpenseQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetExpenseQuery, GetExpenseQueryVariables>(GetExpenseDocument, options);
+        }
+export type GetExpenseQueryHookResult = ReturnType<typeof useGetExpenseQuery>;
+export type GetExpenseLazyQueryHookResult = ReturnType<typeof useGetExpenseLazyQuery>;
+export type GetExpenseQueryResult = Apollo.QueryResult<GetExpenseQuery, GetExpenseQueryVariables>;
 export const GetExpensesDocument = gql`
-    query GetExpenses {
-  expenses {
-    amout
+    query GetExpenses($where: ExpenseWhereInput) {
+  expenses(where: $where, orderBy: date_ASC) {
+    amount
     category {
       color {
         hex
@@ -4257,6 +4486,7 @@ export const GetExpensesDocument = gql`
  * @example
  * const { data, loading, error } = useGetExpensesQuery({
  *   variables: {
+ *      where: // value for 'where'
  *   },
  * });
  */

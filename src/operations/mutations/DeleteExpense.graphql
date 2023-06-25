@@ -1,0 +1,5 @@
+mutation DeleteExpense($where: ExpenseWhereUniqueInput!) {
+  deleteExpense(where: $where) {
+    id
+  }
+}

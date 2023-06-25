@@ -1,5 +1,10 @@
 import { CSSProp } from 'styled-components'
 
+import {
+  Expense as ExpenseType,
+  Category as CategoryType,
+} from 'src/operations/types.d'
+
 export type InsertStyles<T extends string> = {
   [k in T]?: CSSProp
 }
@@ -9,10 +14,11 @@ export type FetchStatus = {
   isError: boolean
 }
 
-export type Expense = {
-  id: string
-  amount: number
-  category: { id: string; name: string; color: string }
+export type Category = Pick<CategoryType, 'id' | 'name'> & {
+  color: string
+}
+
+export type Expense = Pick<ExpenseType, 'id' | 'amount' | 'memo'> & {
   date: Date
-  memo: string
+  category: Category | null
 }

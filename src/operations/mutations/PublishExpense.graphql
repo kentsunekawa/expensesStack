@@ -1,5 +1,5 @@
-query GetExpenses($where: ExpenseWhereInput) {
-  expenses(where: $where, orderBy: date_ASC) {
+mutation PublishExpense($where: ExpenseWhereUniqueInput!) {
+  publishExpense(where: $where, to: [PUBLISHED]) {
     amount
     category {
       color {

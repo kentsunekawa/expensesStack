@@ -3,16 +3,18 @@ import * as Types from '../../types.d';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
-export type GetExpensesQueryVariables = Types.Exact<{ [key: string]: never; }>;
+export type GetExpensesQueryVariables = Types.Exact<{
+  where?: Types.InputMaybe<Types.ExpenseWhereInput>;
+}>;
 
 
-export type GetExpensesQuery = { __typename?: 'Query', expenses: Array<{ __typename?: 'Expense', amout: number, memo?: string | null, id: string, date: string, category?: { __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null } | null }> };
+export type GetExpensesQuery = { __typename?: 'Query', expenses: Array<{ __typename?: 'Expense', amount: number, memo?: string | null, id: string, date: string, category?: { __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null } | null }> };
 
 
 export const GetExpensesDocument = gql`
-    query GetExpenses {
-  expenses {
-    amout
+    query GetExpenses($where: ExpenseWhereInput) {
+  expenses(where: $where, orderBy: date_ASC) {
+    amount
     category {
       color {
         hex
@@ -39,6 +41,7 @@ export const GetExpensesDocument = gql`
  * @example
  * const { data, loading, error } = useGetExpensesQuery({
  *   variables: {
+ *      where: // value for 'where'
  *   },
  * });
  */

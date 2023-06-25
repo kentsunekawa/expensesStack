@@ -1,24 +1,45 @@
-import { useCallback, useState, useMemo } from 'react'
+import { useCallback } from 'react'
 
+import { dateToString } from 'src/utils'
+import { usePublishExpense, toggleIsLoading } from 'src/hooks'
+import { useCreateExpenseMutation } from 'src/operations/mutations/__generated__/CreateExpense'
 import { ExpensesInputs } from 'src/components/globals/ExpenseEditor'
 
-const initialInputs = {
-  date: new Date(),
-  category: null,
-  memo: '',
-  amount: '0',
-}
-
 export const useCreateExpense = () => {
-  const [inputs, setInputs] = useState<ExpensesInputs>(initialInputs)
+  const { doPublish } = usePublishExpense()
 
-  const doCreate = useCallback((newInputs: ExpensesInputs) => {
-    console.log(newInputs)
+  const [createExpense] = useCreateExpenseMutation()
 
-    setTimeout(() => {
-      setInputs(initialInputs)
-    }, 800)
-  }, [])
+  const doCreate = useCallback(
+    (newInputs: ExpensesInputs, onSucceeded: () => void) => {
+      const { amount, date, category, memo } = newInputs
+      toggleIsLoading(true)
+      void createExpense({
+        variables: {
+          data: {
+            amount: Number(amount),
+            memo: memo ?? null,
+            date: dateToString(date, 'yyyy-MM-dd'),
+            category: category
+              ? {
+                  connect: {
+                    id: category.id,
+                  },
+                }
+              : null,
+          },
+        },
+        onCompleted: (data) => {
+          if (data.createExpense?.id)
+            doPublish(data.createExpense?.id, () => {
+              toggleIsLoading(false)
+              onSucceeded()
+            })
+        },
+      })
+    },
+    [createExpense, doPublish],
+  )
 
-  return { doCreate, inputs }
+  return { doCreate }
 }

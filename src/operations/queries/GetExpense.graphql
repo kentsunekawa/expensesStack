@@ -1,5 +1,5 @@
-query GetExpenses($where: ExpenseWhereInput) {
-  expenses(where: $where, orderBy: date_ASC) {
+query GetExpense($where: ExpenseWhereUniqueInput!) {
+  expense(where: $where) {
     amount
     category {
       color {

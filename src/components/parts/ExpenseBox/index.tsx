@@ -4,8 +4,9 @@ import { Paper } from '@mui/material'
 import { getDate } from 'date-fns'
 
 // import from this project
-import { dateToString } from 'src/utils'
 import { Expense } from 'src/types'
+
+import { dateToString } from 'src/utils'
 import { useStyle } from 'src/hooks'
 import { Heading, Text } from 'src/components/parts/Texts'
 import { createStyles } from './styles'
@@ -18,7 +19,8 @@ export const ExpenseBox: React.FC<Props> = ({
   expense: { amount, category, date },
 }) => {
   const { styles } = useStyle(createStyles, {
-    color: category.color,
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    color: category?.color,
   })
 
   return (
@@ -29,7 +31,7 @@ export const ExpenseBox: React.FC<Props> = ({
           <p css={styles.dateArea.dayText}>{dateToString(date, 'E')}</p>
         </div>
         <div css={styles.iconArea.container}>
-          <Text textAlign='left'>{category.name}</Text>
+          {category && <Text textAlign='left'>{category.name}</Text>}
         </div>
       </div>
       <div css={styles.amoutArea.container}>

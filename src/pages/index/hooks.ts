@@ -1,8 +1,13 @@
-import { useCallback, useState, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 import { makeVar, useReactiveVar } from '@apollo/client'
 
-import { FetchStatus, Expense } from 'src/types'
-import { createExpecses } from 'src/mock/mockData/expenses'
+import {
+  dateToString,
+  utcDateStringToDate,
+  getfirstDateOfAfterNthMonth,
+  getlastDateOfAfterNthMonth,
+} from 'src/utils'
+import { useGetExpensesLazyQuery } from 'src/operations/queries/__generated__/GetExpenses'
 
 type SearchQuery = {
   date: Date
@@ -22,33 +27,60 @@ export const useSearchQuery = () => ({
 })
 
 export const useGetExpenses = () => {
-  const [fetchStatus, setFetchStatus] = useState<FetchStatus>({
-    isLoading: false,
-    isError: false,
-  })
+  const [getExpenses, { data, loading, error }] = useGetExpensesLazyQuery()
 
-  const [data, setData] = useState<{
-    expenses: Expense[]
-  } | null>(null)
-
-  const doGetExpenses = useCallback((searchQuery: SearchQuery) => {
-    console.log(searchQuery)
-
-    setFetchStatus({
-      isLoading: true,
-      isError: false,
-    })
-
-    setTimeout(() => {
-      setFetchStatus({
-        isLoading: false,
-        isError: false,
+  const doGetExpenses = useCallback(
+    (searchQuery: SearchQuery) => {
+      void getExpenses({
+        variables: {
+          where: {
+            date_gte: dateToString(
+              getfirstDateOfAfterNthMonth(searchQuery.date, 0),
+              'yyyy-MM-dd',
+            ),
+            date_lte: dateToString(
+              getlastDateOfAfterNthMonth(searchQuery.date, 0),
+              'yyyy-MM-dd',
+            ),
+            category: searchQuery.category
+              ? {
+                  id: searchQuery.category?.id,
+                }
+              : undefined,
+          },
+        },
       })
-      setData({ expenses: createExpecses() })
-    }, 800)
-  }, [])
+    },
+    [getExpenses],
+  )
 
-  const expenses = useMemo(() => data?.expenses ?? null, [data])
+  const expenses = useMemo(
+    () =>
+      data
+        ? data.expenses.map(({ id, amount, memo, date, category }) => ({
+            id,
+            amount,
+            memo,
+            date: utcDateStringToDate(date, 'Date'),
+            category: category
+              ? {
+                  id: category.id,
+                  name: category.name,
+                  color: (category.color?.hex ?? '') as string,
+                }
+              : null,
+          }))
+        : null,
+    [data],
+  )
+
+  const fetchStatus = useMemo(
+    () => ({
+      isLoading: loading,
+      isError: !!error,
+    }),
+    [loading, error],
+  )
 
   return {
     doGetExpenses,

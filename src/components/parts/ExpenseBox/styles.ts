@@ -5,7 +5,7 @@ import { css } from 'styled-components'
 import { StyleBaseData } from 'src/hooks'
 
 type Args = {
-  color: string
+  color?: string | null
 }
 
 export const createStyles = ({ theme }: StyleBaseData, args?: Args) => ({

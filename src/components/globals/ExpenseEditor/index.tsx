@@ -18,6 +18,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { useNavigate } from 'src/router'
 import { useStyle, useCategories } from 'src/hooks'
 import { Suspense } from 'src/components/parts/Suspense'
+import { CategoryBox } from 'src/components/parts/CategoryBox'
 import { Heading } from 'src/components/parts/Texts'
 import { NumButton } from './NumButton'
 import { createStyles } from './styles'
@@ -32,21 +33,30 @@ export type ExpensesInputs = {
 }
 
 type Props = {
-  inputs: ExpensesInputs
+  inputs: ExpensesInputs | null
   mode: Mode
   onSubmit: (inputs: ExpensesInputs) => void
+  onSubmitDelete?: () => void
+}
+
+const initialInputs = {
+  date: new Date(),
+  category: null,
+  memo: '',
+  amount: '0',
 }
 
 export const ExpenseEditor: React.FC<Props> = ({
   mode: _mode,
   inputs: _inputs,
   onSubmit,
+  onSubmitDelete,
 }) => {
   const navigate = useNavigate()
 
   const { styles } = useStyle(createStyles)
 
-  const [inputs, setInputs] = useState<ExpensesInputs>(_inputs)
+  const [inputs, setInputs] = useState<ExpensesInputs>(_inputs ?? initialInputs)
   const [mode] = useState<Mode>(_mode)
 
   const { categories, fetchStatus, doGetCategories } = useCategories()
@@ -62,6 +72,14 @@ export const ExpenseEditor: React.FC<Props> = ({
     },
     [categories],
   )
+
+  const handleChangeDate = useCallback((date: Date | null) => {
+    if (date)
+      setInputs((prev) => ({
+        ...prev,
+        date,
+      }))
+  }, [])
 
   const handleClickNumButton = useCallback(
     (num: string) => {
@@ -116,7 +134,11 @@ export const ExpenseEditor: React.FC<Props> = ({
         <div css={styles.row.container}>
           <div css={styles.row.cell}>
             <FormControl fullWidth>
-              <DatePicker label='Date' value={inputs.date} />
+              <DatePicker
+                label='Date'
+                value={inputs.date}
+                onChange={handleChangeDate}
+              />
             </FormControl>
           </div>
           <div css={styles.row.cell}>
@@ -126,21 +148,40 @@ export const ExpenseEditor: React.FC<Props> = ({
                 size: 32,
               }}
             >
-              <FormControl fullWidth>
-                <InputLabel id='category'>Category</InputLabel>
-                <Select
-                  labelId='category'
-                  value={inputs.category?.id ?? ''}
-                  label='Category'
-                  onChange={handleChangeCategory}
-                >
-                  {categories?.map(({ id, name }) => (
-                    <MenuItem value={id} key={id}>
-                      {name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              {categories && (
+                <FormControl fullWidth>
+                  <InputLabel id='category'>Category</InputLabel>
+                  <Select
+                    labelId='category'
+                    value={inputs.category?.id ?? ''}
+                    label='Category'
+                    onChange={handleChangeCategory}
+                    renderValue={(selectedId) => {
+                      const category = categories.find(
+                        ({ id }) => id === selectedId,
+                      )
+
+                      return category ? (
+                        <CategoryBox
+                          name={category.name}
+                          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                          color={category.color?.hex ?? undefined}
+                        />
+                      ) : null
+                    }}
+                  >
+                    {categories.map(({ id, name, color }) => (
+                      <MenuItem value={id} key={id}>
+                        <CategoryBox
+                          name={name}
+                          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                          color={color?.hex ?? undefined}
+                        />
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
             </Suspense>
           </div>
         </div>
@@ -245,6 +286,20 @@ export const ExpenseEditor: React.FC<Props> = ({
             {mode === 'create' ? 'Register' : 'Update'}
           </Button>
         </div>
+        {mode === 'edit' && (
+          <div css={styles.row.container}>
+            <Button
+              fullWidth
+              size='large'
+              variant='outlined'
+              color='error'
+              css={styles.submitButton}
+              onClick={onSubmitDelete}
+            >
+              Delete
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -1,10 +1,27 @@
-import { ExpenseEditor } from 'src/components/globals/ExpenseEditor'
+import { useCallback } from 'react'
+
+import { useNavigate } from 'src/router'
+import {
+  ExpenseEditor,
+  ExpensesInputs,
+} from 'src/components/globals/ExpenseEditor'
 import { useCreateExpense } from './hooks'
 
 const Register: React.FC = () => {
-  const { doCreate, inputs } = useCreateExpense()
+  const navigate = useNavigate()
 
-  return <ExpenseEditor mode='create' inputs={inputs} onSubmit={doCreate} />
+  const { doCreate } = useCreateExpense()
+
+  const handleSubmit = useCallback(
+    (newInputs: ExpensesInputs) => {
+      doCreate(newInputs, () => {
+        navigate('/')
+      })
+    },
+    [doCreate, navigate],
+  )
+
+  return <ExpenseEditor mode='create' inputs={null} onSubmit={handleSubmit} />
 }
 
 export default Register

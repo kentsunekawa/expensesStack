@@ -1,17 +1,21 @@
 // import from libraries
 import 'styled-components/macro'
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useMemo } from 'react'
 import { IconButton } from '@mui/material'
 import { Add as AddIcon } from '@mui/icons-material'
 
 import { useNavigate } from 'src/router'
 import { useStyle } from 'src/hooks'
 import { Suspense } from 'src/components/parts/Suspense'
-import { useGetExpenses, changeSearchQuery, useSearchQuery } from './hooks'
-import { createStyles } from './styles'
-import { Header } from '../../components/pageContents/index/Header'
-import { TotalDisplay } from '../../components/pageContents/index/TotalDisplay'
-import { ExpenseBox } from '../../components/pageContents/index/ExpenseBox'
+import {
+  useGetExpenses,
+  changeSearchQuery,
+  useSearchQuery,
+} from './index/hooks'
+import { createStyles } from './index/styles'
+import { Header } from '../components/pageContents/index/Header'
+import { TotalDisplay } from '../components/pageContents/index/TotalDisplay'
+import { ExpenseBox } from '../components/parts/ExpenseBox'
 
 const Home: React.FC = () => {
   const navigate = useNavigate()
@@ -37,6 +41,14 @@ const Home: React.FC = () => {
       })
     },
     [navigate],
+  )
+
+  const totalNum = useMemo(
+    () =>
+      expenses && expenses.length > 0
+        ? expenses.map(({ amount }) => amount).reduce((sum, elem) => sum + elem)
+        : null,
+    [expenses],
   )
 
   useEffect(() => {
@@ -81,7 +93,7 @@ const Home: React.FC = () => {
       </div>
       <div css={styles.totalDisplayArea}>
         <TotalDisplay
-          totalNum='80000'
+          totalNum={totalNum}
           category={searchQuery.category}
           onChangeCategory={handleChangeCategory}
         />

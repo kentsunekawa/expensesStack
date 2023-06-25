@@ -2,5 +2,8 @@ query GetCategories {
   categories {
     id
     name
+    color {
+      hex
+    }
   }
 }
