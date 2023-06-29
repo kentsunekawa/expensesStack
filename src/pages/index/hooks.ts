@@ -7,6 +7,7 @@ import {
   getfirstDateOfAfterNthMonth,
   getlastDateOfAfterNthMonth,
 } from 'src/utils'
+import { Stage } from 'src/operations/types.d'
 import { useGetExpensesLazyQuery } from 'src/operations/queries/__generated__/GetExpenses'
 
 type SearchQuery = {
@@ -33,6 +34,7 @@ export const useGetExpenses = () => {
     (searchQuery: SearchQuery) => {
       void getExpenses({
         variables: {
+          stage: import.meta.env.PROD ? Stage.Published : Stage.Draft,
           where: {
             date_gte: dateToString(
               getfirstDateOfAfterNthMonth(searchQuery.date, 0),

@@ -30,11 +30,16 @@ export const useCreateExpense = () => {
           },
         },
         onCompleted: (data) => {
-          if (data.createExpense?.id)
-            doPublish(data.createExpense?.id, () => {
-              toggleIsLoading(false)
-              onSucceeded()
-            })
+          if (import.meta.env.PROD) {
+            if (data.createExpense?.id)
+              doPublish(data.createExpense?.id, () => {
+                toggleIsLoading(false)
+                onSucceeded()
+              })
+          } else {
+            toggleIsLoading(false)
+            onSucceeded()
+          }
         },
       })
     },

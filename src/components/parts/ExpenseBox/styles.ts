@@ -8,7 +8,7 @@ type Args = {
   color?: string | null
 }
 
-export const createStyles = ({ theme }: StyleBaseData, args?: Args) => ({
+export const createStyles = (_: StyleBaseData, args?: Args) => ({
   container: css`
     display: flex;
     gap: 0 8px;

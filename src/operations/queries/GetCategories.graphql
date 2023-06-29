@@ -1,5 +1,5 @@
-query GetCategories {
-  categories {
+query GetCategories($stage: Stage!) {
+  categories(stage: $stage) {
     id
     name
     color {

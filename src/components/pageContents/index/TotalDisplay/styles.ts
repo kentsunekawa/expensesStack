@@ -1,10 +1,7 @@
 // import from libraries
 import { css } from 'styled-components'
 
-// import from this project
-import { StyleBaseData } from 'src/hooks'
-
-export const createStyles = ({ theme }: StyleBaseData) => ({
+export const createStyles = () => ({
   container: css`
     width: 100%;
     padding: 8px;

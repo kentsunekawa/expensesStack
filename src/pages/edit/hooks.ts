@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { dateToString, utcDateStringToDate } from 'src/utils'
 import { usePublishExpense, toggleIsLoading } from 'src/hooks'
+import { Stage } from 'src/operations/types.d'
 import { useGetExpenseLazyQuery } from 'src/operations/queries/__generated__/GetExpense'
 import { useUpdateExpenseMutation } from 'src/operations/mutations/__generated__/UpdateExpense'
 import { useDeleteExpenseMutation } from 'src/operations/mutations/__generated__/DeleteExpense'
@@ -14,6 +15,7 @@ export const useGetExpense = () => {
     (id: string) => {
       void getExpense({
         variables: {
+          stage: import.meta.env.PROD ? Stage.Published : Stage.Draft,
           where: {
             id,
           },
@@ -81,11 +83,16 @@ export const useUpdateExpense = (id: string) => {
           },
         },
         onCompleted: (data) => {
-          if (data.updateExpense?.id) {
-            doPublish(data.updateExpense?.id, () => {
-              toggleIsLoading(false)
-              onSucceeded()
-            })
+          if (import.meta.env.PROD) {
+            if (data.updateExpense?.id) {
+              doPublish(data.updateExpense?.id, () => {
+                toggleIsLoading(false)
+                onSucceeded()
+              })
+            }
+          } else {
+            toggleIsLoading(false)
+            onSucceeded()
           }
         },
       })

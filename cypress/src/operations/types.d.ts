@@ -4208,15 +4208,18 @@ export type UpdateExpenseMutationVariables = Exact<{
 }>;
 
 
-export type UpdateExpenseMutation = { __typename?: 'Mutation', updateExpense?: { __typename?: 'Expense', id: string } | null };
+export type UpdateExpenseMutation = { __typename?: 'Mutation', updateExpense?: { __typename?: 'Expense', amount: number, memo?: string | null, id: string, date: string, category?: { __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null } | null } | null };
 
-export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetCategoriesQueryVariables = Exact<{
+  stage: Stage;
+}>;
 
 
 export type GetCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null }> };
 
 export type GetExpenseQueryVariables = Exact<{
   where: ExpenseWhereUniqueInput;
+  stage: Stage;
 }>;
 
 
@@ -4224,6 +4227,7 @@ export type GetExpenseQuery = { __typename?: 'Query', expense?: { __typename?: '
 
 export type GetExpensesQueryVariables = Exact<{
   where?: InputMaybe<ExpenseWhereInput>;
+  stage: Stage;
 }>;
 
 
@@ -4342,7 +4346,17 @@ export type PublishExpenseMutationOptions = Apollo.BaseMutationOptions<PublishEx
 export const UpdateExpenseDocument = gql`
     mutation UpdateExpense($data: ExpenseUpdateInput!, $where: ExpenseWhereUniqueInput!) {
   updateExpense(data: $data, where: $where) {
+    amount
+    category {
+      color {
+        hex
+      }
+      id
+      name
+    }
+    memo
     id
+    date
   }
 }
     `;
@@ -4374,8 +4388,8 @@ export type UpdateExpenseMutationHookResult = ReturnType<typeof useUpdateExpense
 export type UpdateExpenseMutationResult = Apollo.MutationResult<UpdateExpenseMutation>;
 export type UpdateExpenseMutationOptions = Apollo.BaseMutationOptions<UpdateExpenseMutation, UpdateExpenseMutationVariables>;
 export const GetCategoriesDocument = gql`
-    query GetCategories {
-  categories {
+    query GetCategories($stage: Stage!) {
+  categories(stage: $stage) {
     id
     name
     color {
@@ -4397,10 +4411,11 @@ export const GetCategoriesDocument = gql`
  * @example
  * const { data, loading, error } = useGetCategoriesQuery({
  *   variables: {
+ *      stage: // value for 'stage'
  *   },
  * });
  */
-export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+export function useGetCategoriesQuery(baseOptions: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
       }
@@ -4412,8 +4427,8 @@ export type GetCategoriesQueryHookResult = ReturnType<typeof useGetCategoriesQue
 export type GetCategoriesLazyQueryHookResult = ReturnType<typeof useGetCategoriesLazyQuery>;
 export type GetCategoriesQueryResult = Apollo.QueryResult<GetCategoriesQuery, GetCategoriesQueryVariables>;
 export const GetExpenseDocument = gql`
-    query GetExpense($where: ExpenseWhereUniqueInput!) {
-  expense(where: $where) {
+    query GetExpense($where: ExpenseWhereUniqueInput!, $stage: Stage!) {
+  expense(where: $where, stage: $stage) {
     amount
     category {
       color {
@@ -4442,6 +4457,7 @@ export const GetExpenseDocument = gql`
  * const { data, loading, error } = useGetExpenseQuery({
  *   variables: {
  *      where: // value for 'where'
+ *      stage: // value for 'stage'
  *   },
  * });
  */
@@ -4457,8 +4473,8 @@ export type GetExpenseQueryHookResult = ReturnType<typeof useGetExpenseQuery>;
 export type GetExpenseLazyQueryHookResult = ReturnType<typeof useGetExpenseLazyQuery>;
 export type GetExpenseQueryResult = Apollo.QueryResult<GetExpenseQuery, GetExpenseQueryVariables>;
 export const GetExpensesDocument = gql`
-    query GetExpenses($where: ExpenseWhereInput) {
-  expenses(where: $where, orderBy: date_ASC) {
+    query GetExpenses($where: ExpenseWhereInput, $stage: Stage!) {
+  expenses(where: $where, stage: $stage, orderBy: date_DESC) {
     amount
     category {
       color {
@@ -4487,10 +4503,11 @@ export const GetExpensesDocument = gql`
  * const { data, loading, error } = useGetExpensesQuery({
  *   variables: {
  *      where: // value for 'where'
+ *      stage: // value for 'stage'
  *   },
  * });
  */
-export function useGetExpensesQuery(baseOptions?: Apollo.QueryHookOptions<GetExpensesQuery, GetExpensesQueryVariables>) {
+export function useGetExpensesQuery(baseOptions: Apollo.QueryHookOptions<GetExpensesQuery, GetExpensesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetExpensesQuery, GetExpensesQueryVariables>(GetExpensesDocument, options);
       }

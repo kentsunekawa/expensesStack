@@ -6,6 +6,7 @@ import { Add as AddIcon } from '@mui/icons-material'
 
 import { useNavigate } from 'src/router'
 import { useStyle } from 'src/hooks'
+import { Messages } from 'src/components/parts/Messages'
 import { Suspense } from 'src/components/parts/Suspense'
 import {
   useGetExpenses,
@@ -57,10 +58,18 @@ const Home: React.FC = () => {
 
   return (
     <div css={styles.container}>
-      <Header
-        date={searchQuery.date}
-        onChangeDate={(date) => changeSearchQuery({ date })}
-      />
+      <div css={styles.headerSpace} />
+      <div css={styles.header}>
+        <Header
+          date={searchQuery.date}
+          onChangeDate={(date) => changeSearchQuery({ date })}
+        />
+        <TotalDisplay
+          totalNum={totalNum}
+          category={searchQuery.category}
+          onChangeCategory={handleChangeCategory}
+        />
+      </div>
       <Suspense {...fetchStatus} loadingProps={{ minHeight: 300 }}>
         {expenses && (
           <div css={styles.expensesArea}>
@@ -78,11 +87,12 @@ const Home: React.FC = () => {
                 ))}
               </>
             ) : (
-              <>0 件です</>
+              <Messages.Empty message='今月の出費はありません' />
             )}
           </div>
         )}
       </Suspense>
+      <div css={styles.bottomSpace} />
       <div css={styles.goToRegiserButtonPosi}>
         <IconButton
           css={styles.goToRegiserButton}
@@ -90,13 +100,6 @@ const Home: React.FC = () => {
         >
           <AddIcon />
         </IconButton>
-      </div>
-      <div css={styles.totalDisplayArea}>
-        <TotalDisplay
-          totalNum={totalNum}
-          category={searchQuery.category}
-          onChangeCategory={handleChangeCategory}
-        />
       </div>
     </div>
   )

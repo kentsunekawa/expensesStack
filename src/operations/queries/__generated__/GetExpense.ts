@@ -5,6 +5,7 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type GetExpenseQueryVariables = Types.Exact<{
   where: Types.ExpenseWhereUniqueInput;
+  stage: Types.Stage;
 }>;
 
 
@@ -12,8 +13,8 @@ export type GetExpenseQuery = { __typename?: 'Query', expense?: { __typename?: '
 
 
 export const GetExpenseDocument = gql`
-    query GetExpense($where: ExpenseWhereUniqueInput!) {
-  expense(where: $where) {
+    query GetExpense($where: ExpenseWhereUniqueInput!, $stage: Stage!) {
+  expense(where: $where, stage: $stage) {
     amount
     category {
       color {
@@ -42,6 +43,7 @@ export const GetExpenseDocument = gql`
  * const { data, loading, error } = useGetExpenseQuery({
  *   variables: {
  *      where: // value for 'where'
+ *      stage: // value for 'stage'
  *   },
  * });
  */

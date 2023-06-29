@@ -5,6 +5,7 @@ import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
 export type GetExpensesQueryVariables = Types.Exact<{
   where?: Types.InputMaybe<Types.ExpenseWhereInput>;
+  stage: Types.Stage;
 }>;
 
 
@@ -12,8 +13,8 @@ export type GetExpensesQuery = { __typename?: 'Query', expenses: Array<{ __typen
 
 
 export const GetExpensesDocument = gql`
-    query GetExpenses($where: ExpenseWhereInput) {
-  expenses(where: $where, orderBy: date_ASC) {
+    query GetExpenses($where: ExpenseWhereInput, $stage: Stage!) {
+  expenses(where: $where, stage: $stage, orderBy: date_DESC) {
     amount
     category {
       color {
@@ -42,10 +43,11 @@ export const GetExpensesDocument = gql`
  * const { data, loading, error } = useGetExpensesQuery({
  *   variables: {
  *      where: // value for 'where'
+ *      stage: // value for 'stage'
  *   },
  * });
  */
-export function useGetExpensesQuery(baseOptions?: Apollo.QueryHookOptions<GetExpensesQuery, GetExpensesQueryVariables>) {
+export function useGetExpensesQuery(baseOptions: Apollo.QueryHookOptions<GetExpensesQuery, GetExpensesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetExpensesQuery, GetExpensesQueryVariables>(GetExpensesDocument, options);
       }

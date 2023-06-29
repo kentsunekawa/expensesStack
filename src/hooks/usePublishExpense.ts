@@ -8,7 +8,9 @@ export const usePublishExpense = () => {
   const doPublish = useCallback(
     (id: string, onPublished?: () => void) => {
       void publishExpense({
-        variables: { where: { id } },
+        variables: {
+          where: { id },
+        },
         onCompleted: onPublished,
       })
     },

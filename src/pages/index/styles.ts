@@ -8,6 +8,20 @@ export const createStyles = ({ theme }: StyleBaseData) => ({
   container: css`
     padding: 16px;
   `,
+  headerSpace: css`
+    width: 100%;
+    padding-top: 112px;
+  `,
+  bottomSpace: css`
+    width: 100%;
+    padding-top: 72px;
+  `,
+  header: css`
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+  `,
   expensesArea: css`
     display: flex;
     flex-wrap: wrap;
@@ -16,19 +30,13 @@ export const createStyles = ({ theme }: StyleBaseData) => ({
   goToRegiserButtonPosi: css`
     position: fixed;
     right: 16px;
-    bottom: 72px;
+    bottom: 16px;
   `,
   goToRegiserButton: css`
     width: 56px;
     height: 56px;
     background: ${theme.palette.primary.main};
     color: '#fff';
-  `,
-  totalDisplayArea: css`
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
   `,
   expense: css`
     width: 100%;

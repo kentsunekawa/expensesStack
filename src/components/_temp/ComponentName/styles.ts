@@ -23,7 +23,9 @@ const createSizes = (size?: Size) => {
   }
 }
 
+// @ts-ignore
 export const createStyles = ({ theme }: StyleBaseData, args?: Args) => {
+  // @ts-ignore
   const sizes = createSizes(args?.size)
 
   return {

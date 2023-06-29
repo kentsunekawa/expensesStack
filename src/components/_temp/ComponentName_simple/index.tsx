@@ -9,6 +9,7 @@ export type Props = {
   text?: string
 }
 
+// @ts-ignore
 export const ComponentName: React.FC<Props> = ({ text }) => {
   const { styles } = useStyle(createStyles)
 

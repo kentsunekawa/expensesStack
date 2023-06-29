@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "generate": "graphql-codegen --config codegen.yml",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "serve": "serve -p 3000 -s ./dist"
   },
   "dependencies": {
     "@apollo/client": "^3.7.15",
@@ -27,6 +28,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.12.1",
+    "serve": "^14.2.0",
     "styled-components": "^5.3.11"
   },
   "devDependencies": {

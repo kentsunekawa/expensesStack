@@ -1,5 +1,5 @@
-query GetExpense($where: ExpenseWhereUniqueInput!) {
-  expense(where: $where) {
+query GetExpense($where: ExpenseWhereUniqueInput!, $stage: Stage!) {
+  expense(where: $where, stage: $stage) {
     amount
     category {
       color {

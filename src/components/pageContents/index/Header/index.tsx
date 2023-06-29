@@ -1,7 +1,7 @@
 // import from libraries
 import 'styled-components/macro'
 import { useCallback, useMemo } from 'react'
-import { IconButton, Paper } from '@mui/material'
+import { IconButton } from '@mui/material'
 import {
   ArrowLeftRounded as ArrowLeftRoundedIcon,
   ArrowRightRounded as ArrowRightRoundedIcon,
@@ -47,25 +47,22 @@ export const Header: React.FC<Props> = ({ date, onChangeDate }) => {
   )
 
   return (
-    <>
-      <div css={styles.space} />
-      <div css={styles.container}>
-        <div css={styles.moveButtonArea}>
-          <IconButton onClick={() => handleClickMoveButton(-1)}>
-            <ArrowLeftRoundedIcon />
-          </IconButton>
-        </div>
-        <div>
-          <Heading size='h6'>{dateToString(date, 'yyyy, MMMM')}</Heading>
-        </div>
-        <div css={styles.moveButtonArea}>
-          {canGoNextMonth && (
-            <IconButton onClick={() => handleClickMoveButton(1)}>
-              <ArrowRightRoundedIcon />
-            </IconButton>
-          )}
-        </div>
+    <div css={styles.container}>
+      <div css={styles.moveButtonArea}>
+        <IconButton onClick={() => handleClickMoveButton(-1)}>
+          <ArrowLeftRoundedIcon />
+        </IconButton>
       </div>
-    </>
+      <div>
+        <Heading size='h6'>{dateToString(date, 'yyyy, MMMM')}</Heading>
+      </div>
+      <div css={styles.moveButtonArea}>
+        {canGoNextMonth && (
+          <IconButton onClick={() => handleClickMoveButton(1)}>
+            <ArrowRightRoundedIcon />
+          </IconButton>
+        )}
+      </div>
+    </div>
   )
 }

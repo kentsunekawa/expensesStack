@@ -9,13 +9,23 @@ export type UpdateExpenseMutationVariables = Types.Exact<{
 }>;
 
 
-export type UpdateExpenseMutation = { __typename?: 'Mutation', updateExpense?: { __typename?: 'Expense', id: string } | null };
+export type UpdateExpenseMutation = { __typename?: 'Mutation', updateExpense?: { __typename?: 'Expense', amount: number, memo?: string | null, id: string, date: string, category?: { __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null } | null } | null };
 
 
 export const UpdateExpenseDocument = gql`
     mutation UpdateExpense($data: ExpenseUpdateInput!, $where: ExpenseWhereUniqueInput!) {
   updateExpense(data: $data, where: $where) {
+    amount
+    category {
+      color {
+        hex
+      }
+      id
+      name
+    }
+    memo
     id
+    date
   }
 }
     `;

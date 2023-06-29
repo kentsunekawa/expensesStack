@@ -3,6 +3,16 @@ mutation UpdateExpense(
   $where: ExpenseWhereUniqueInput!
 ) {
   updateExpense(data: $data, where: $where) {
+    amount
+    category {
+      color {
+        hex
+      }
+      id
+      name
+    }
+    memo
     id
+    date
   }
 }

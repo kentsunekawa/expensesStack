@@ -3,15 +3,17 @@ import * as Types from '../../types.d';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 const defaultOptions = {} as const;
-export type GetCategoriesQueryVariables = Types.Exact<{ [key: string]: never; }>;
+export type GetCategoriesQueryVariables = Types.Exact<{
+  stage: Types.Stage;
+}>;
 
 
 export type GetCategoriesQuery = { __typename?: 'Query', categories: Array<{ __typename?: 'Category', id: string, name: string, color?: { __typename?: 'Color', hex: any } | null }> };
 
 
 export const GetCategoriesDocument = gql`
-    query GetCategories {
-  categories {
+    query GetCategories($stage: Stage!) {
+  categories(stage: $stage) {
     id
     name
     color {
@@ -33,10 +35,11 @@ export const GetCategoriesDocument = gql`
  * @example
  * const { data, loading, error } = useGetCategoriesQuery({
  *   variables: {
+ *      stage: // value for 'stage'
  *   },
  * });
  */
-export function useGetCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
+export function useGetCategoriesQuery(baseOptions: Apollo.QueryHookOptions<GetCategoriesQuery, GetCategoriesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
         return Apollo.useQuery<GetCategoriesQuery, GetCategoriesQueryVariables>(GetCategoriesDocument, options);
       }
