@@ -1,5 +1,5 @@
-mutation CreateExpense($data: ExpenseCreateInput!) {
-  createExpense(data: $data) {
+query GetAllExpenses {
+  expenses {
     amount
     category {
       color {

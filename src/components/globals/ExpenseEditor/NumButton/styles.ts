@@ -8,7 +8,7 @@ export const createStyles = ({ theme }: StyleBaseData) => ({
   container: css`
     position: relative;
     width: 100%;
-    border: 1px solid ${theme.palette.primary.main};
+    border: 2px solid ${theme.palette.primary.main};
     border-radius: 50%;
     &:before {
       content: '';
@@ -28,5 +28,12 @@ export const createStyles = ({ theme }: StyleBaseData) => ({
     justify-content: center;
     align-items: center;
     color: ${theme.palette.primary.main};
+    font-weight: 500;
+  `,
+  notNumberContainer: css`
+    border: 2px solid ${theme.palette.primary.dark};
+  `,
+  notNumberText: css`
+    color: ${theme.palette.primary.dark};
   `,
 })

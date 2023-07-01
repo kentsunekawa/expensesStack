@@ -249,8 +249,9 @@ export const ExpenseEditor: React.FC<Props> = ({
             <div css={styles.numButtonArea.cell}>
               <div css={styles.numButtonArea.inner}>
                 <NumButton
+                  notNumber
                   disabled={inputs.amount === '0'}
-                  num='X'
+                  num='×'
                   onClick={handleClickRemoveButton}
                 />
               </div>
@@ -258,6 +259,7 @@ export const ExpenseEditor: React.FC<Props> = ({
             <div css={styles.numButtonArea.cell}>
               <div css={styles.numButtonArea.inner}>
                 <NumButton
+                  notNumber
                   disabled={inputs.amount === '0'}
                   num='C'
                   onClick={handleClickClearButton}

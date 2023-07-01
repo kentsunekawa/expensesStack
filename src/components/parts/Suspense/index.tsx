@@ -2,8 +2,8 @@
 import 'styled-components/macro'
 
 // import from this project
-import { Text } from 'src/components/parts/Texts'
 import { Loading, Props as LoadingProps } from 'src/components/parts/Loading'
+import { Messages } from 'src/components/parts/Messages'
 
 export { Loading }
 
@@ -26,7 +26,7 @@ export const Suspense: React.FC<Props> = ({
 }) => (
   <>
     {isError ? (
-      <>{errorContent ?? <Text>エラーが発生しました</Text>}</>
+      <>{errorContent ?? <Messages.Error />}</>
     ) : (
       <>
         {isLoading ? (

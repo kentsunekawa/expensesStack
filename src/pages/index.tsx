@@ -87,7 +87,7 @@ const Home: React.FC = () => {
                 ))}
               </>
             ) : (
-              <Messages.Empty message='今月の出費はありません' />
+              <Messages.Empty message='No expenses.' />
             )}
           </div>
         )}
