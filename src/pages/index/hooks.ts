@@ -15,10 +15,16 @@ type SearchQuery = {
   category: { id: string; name: string } | null
 }
 
-const searchQueryVar = makeVar<SearchQuery>({
+export const isFirstFetchVar = makeVar<boolean>(true)
+
+export const searchQueryVar = makeVar<SearchQuery>({
   date: new Date(),
   category: null,
 })
+
+export const resetVars = () => {
+  isFirstFetchVar(true)
+}
 
 export const changeSearchQuery = (searchQuery: Partial<SearchQuery>) =>
   searchQueryVar({ ...searchQueryVar(), ...searchQuery })
@@ -31,8 +37,10 @@ export const useGetExpenses = () => {
   const [getExpenses, { data, loading, error }] = useGetExpensesLazyQuery()
 
   const doGetExpenses = useCallback(
-    (searchQuery: SearchQuery) => {
+    (searchQuery: SearchQuery, forceFetch: boolean) => {
       void getExpenses({
+        fetchPolicy:
+          forceFetch && isFirstFetchVar() ? 'network-only' : undefined,
         variables: {
           stage: import.meta.env.PROD ? Stage.Published : Stage.Draft,
           where: {
@@ -50,6 +58,9 @@ export const useGetExpenses = () => {
                 }
               : undefined,
           },
+        },
+        onCompleted: () => {
+          isFirstFetchVar(false)
         },
       })
     },

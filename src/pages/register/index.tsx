@@ -15,7 +15,11 @@ const Register: React.FC = () => {
   const handleSubmit = useCallback(
     (newInputs: ExpensesInputs) => {
       doCreate(newInputs, () => {
-        navigate('/')
+        navigate('/', {
+          state: {
+            forceFetch: true,
+          },
+        })
       })
     },
     [doCreate, navigate],

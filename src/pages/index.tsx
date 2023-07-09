@@ -1,6 +1,7 @@
 // import from libraries
 import 'styled-components/macro'
 import { useEffect, useCallback, useMemo } from 'react'
+import { useLocation } from 'react-router-dom'
 import { IconButton } from '@mui/material'
 import { Add as AddIcon } from '@mui/icons-material'
 
@@ -12,13 +13,21 @@ import {
   useGetExpenses,
   changeSearchQuery,
   useSearchQuery,
+  resetVars,
 } from './index/hooks'
 import { createStyles } from './index/styles'
 import { Header } from '../components/pageContents/index/Header'
 import { TotalDisplay } from '../components/pageContents/index/TotalDisplay'
 import { ExpenseBox } from '../components/parts/ExpenseBox'
 
+type State = {
+  forceFetch?: boolean
+}
+
 const Home: React.FC = () => {
+  const location = useLocation()
+  const forceFetch = (location.state as State)?.forceFetch ?? false
+
   const navigate = useNavigate()
 
   const { styles } = useStyle(createStyles)
@@ -53,8 +62,10 @@ const Home: React.FC = () => {
   )
 
   useEffect(() => {
-    doGetExpenses(searchQuery)
-  }, [doGetExpenses, searchQuery])
+    doGetExpenses(searchQuery, forceFetch)
+  }, [doGetExpenses, searchQuery, forceFetch])
+
+  useEffect(() => resetVars, [])
 
   return (
     <div css={styles.container}>

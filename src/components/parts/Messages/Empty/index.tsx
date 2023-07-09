@@ -8,9 +8,10 @@ import { createStyles } from './styles'
 
 export type Props = {
   message: string
+  children?: React.ReactNode
 }
 
-export const Empty: React.FC<Props> = ({ message }) => {
+export const Empty: React.FC<Props> = ({ message, children }) => {
   const { styles, theme } = useStyle(createStyles)
 
   return (
@@ -18,6 +19,7 @@ export const Empty: React.FC<Props> = ({ message }) => {
       <Text size='large' color={theme.palette.text.secondary}>
         {message}
       </Text>
+      {children && <div css={styles.content}>{children}</div>}
     </div>
   )
 }

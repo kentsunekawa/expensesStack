@@ -1,5 +1,4 @@
-import { useCallback, useMemo } from 'react'
-
+import { useCallback, useMemo, useState } from 'react'
 import { dateToString, utcDateStringToDate } from 'src/utils'
 import { usePublishExpense, toggleIsLoading } from 'src/hooks'
 import { Stage } from 'src/operations/types.d'
@@ -9,6 +8,7 @@ import { useDeleteExpenseMutation } from 'src/operations/mutations/__generated__
 import { ExpensesInputs } from 'src/components/globals/ExpenseEditor'
 
 export const useGetExpense = () => {
+  const [isNotFound, setIsNotFound] = useState<boolean>(false)
   const [getExpense, { data, loading, error }] = useGetExpenseLazyQuery()
 
   const doGetExpense = useCallback(
@@ -19,6 +19,9 @@ export const useGetExpense = () => {
           where: {
             id,
           },
+        },
+        onCompleted: (result) => {
+          setIsNotFound(result.expense === null)
         },
       })
     },
@@ -52,7 +55,7 @@ export const useGetExpense = () => {
     [error, loading],
   )
 
-  return { doGetExpense, fetchStatus, expense }
+  return { doGetExpense, fetchStatus, expense, isNotFound }
 }
 
 export const useUpdateExpense = (id: string) => {
@@ -112,6 +115,11 @@ export const useDeleteExpense = (id: string) => {
       void deleteExpense({
         variables: {
           where: { id },
+        },
+        update: (cache) => {
+          const normalizedId = cache.identify({ id, __typename: 'Expense' })
+          cache.evict({ id: normalizedId })
+          cache.gc()
         },
         onCompleted: () => {
           toggleIsLoading(false)
