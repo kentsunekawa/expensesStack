@@ -14,7 +14,7 @@ export type GetExpensesQuery = { __typename?: 'Query', expenses: Array<{ __typen
 
 export const GetExpensesDocument = gql`
     query GetExpenses($where: ExpenseWhereInput, $stage: Stage!) {
-  expenses(where: $where, stage: $stage, orderBy: date_DESC) {
+  expenses(where: $where, stage: $stage, first: 1000, orderBy: date_DESC) {
     amount
     category {
       color {
