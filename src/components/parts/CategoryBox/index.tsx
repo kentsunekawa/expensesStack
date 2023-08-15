@@ -6,25 +6,15 @@ import { useStyle } from 'src/hooks'
 import { Text } from 'src/components/parts/Texts'
 import { createStyles } from './styles'
 
-export type Props = {
-  text?: string
-}
-
 export const CategoryBox: React.FC<{
   name: string
   color?: string
 }> = ({ name, color }) => {
-  const { styles } = useStyle(createStyles)
+  const { styles } = useStyle(createStyles, { color })
 
   return (
     <div css={styles.container}>
-      <span
-        css={styles.icon}
-        style={{
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-          backgroundColor: color ?? undefined,
-        }}
-      />
+      <span css={styles.icon} />
       <Text>{name}</Text>
     </div>
   )

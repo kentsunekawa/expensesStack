@@ -9,7 +9,7 @@ export const useCategories = () => {
   const doGetCategories = useCallback(() => {
     void getCategories({
       variables: {
-        stage: import.meta.env.PROD ? Stage.Published : Stage.Draft,
+        stage: process.env.PROD ? Stage.Published : Stage.Draft,
       },
     })
   }, [getCategories])

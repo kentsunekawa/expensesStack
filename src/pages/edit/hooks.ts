@@ -15,7 +15,7 @@ export const useGetExpense = () => {
     (id: string) => {
       void getExpense({
         variables: {
-          stage: import.meta.env.PROD ? Stage.Published : Stage.Draft,
+          stage: process.env.PROD ? Stage.Published : Stage.Draft,
           where: {
             id,
           },
@@ -86,7 +86,7 @@ export const useUpdateExpense = (id: string) => {
           },
         },
         onCompleted: (data) => {
-          if (import.meta.env.PROD) {
+          if (process.env.PROD) {
             if (data.updateExpense?.id) {
               doPublish(data.updateExpense?.id, () => {
                 toggleIsLoading(false)

@@ -13,18 +13,18 @@ type Props = {
 const cache = new InMemoryCache()
 
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_API_URL,
+  uri: process.env.VITE_API_URL,
 })
 
 const authLink = setContext(() => ({
   headers: {
-    Authorization: `Bearer ${import.meta.env.VITE_API_TOKEN ?? ''}`,
+    Authorization: `Bearer ${process.env.VITE_API_TOKEN ?? ''}`,
   },
 }))
 
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
-  connectToDevTools: !import.meta.env.PROD,
+  connectToDevTools: !process.env.PROD,
   cache,
 })
 

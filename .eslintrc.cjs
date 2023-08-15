@@ -12,6 +12,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier',
+    'react-app',
+    'react-app/jest',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -82,4 +84,8 @@ module.exports = {
       },
     },
   },
+  presets: [
+    '@babel/preset-env',
+    ['@babel/preset-react', { runtime: 'automatic' }],
+  ],
 }

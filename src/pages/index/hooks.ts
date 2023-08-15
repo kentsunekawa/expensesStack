@@ -42,7 +42,7 @@ export const useGetExpenses = () => {
         fetchPolicy:
           forceFetch && isFirstFetchVar() ? 'network-only' : undefined,
         variables: {
-          stage: import.meta.env.PROD ? Stage.Published : Stage.Draft,
+          stage: process.env.PROD ? Stage.Published : Stage.Draft,
           where: {
             date_gte: dateToString(
               getfirstDateOfAfterNthMonth(searchQuery.date, 0),

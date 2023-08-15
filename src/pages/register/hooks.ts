@@ -29,7 +29,7 @@ export const useCreateExpense = () => {
           },
         },
         onCompleted: (data) => {
-          if (import.meta.env.PROD) {
+          if (process.env.PROD) {
             if (data.createExpense?.id)
               doPublish(data.createExpense?.id, () => {
                 toggleIsLoading(false)
