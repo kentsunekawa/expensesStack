@@ -22,6 +22,6 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": "./"
   },
-  "include": ["src", ".eslintrc.cjs", "vite.config.ts"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "include": ["src", ".eslintrc.cjs", "vite.config.ts", "jest.setup.ts", "jest.config.ts"],
+  "references": [{ "path": "./tsconfig.node.json" }],
 }
