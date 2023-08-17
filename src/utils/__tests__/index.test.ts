@@ -4,6 +4,7 @@ import {
   dateToString,
   getfirstDateOfAfterNthMonth,
   getlastDateOfAfterNthMonth,
+  createTestIds,
 } from '../'
 
 describe('utils/index.ts', () => {
@@ -84,6 +85,35 @@ describe('utils/index.ts', () => {
       expect(
         getlastDateOfAfterNthMonth(new Date(2023, 7, 15), 2),
       ).toStrictEqual(new Date(2023, 9, 31))
+    })
+  })
+
+  describe('createTestIds', () => {
+    it('正しい値が得られる', () => {
+      expect(
+        createTestIds<'child1' | 'child2' | 'child3'>('Parent', [
+          'child1',
+          'child2',
+          'child3',
+        ]),
+      ).toStrictEqual({
+        child1: {
+          'data-testid': 'Parent__child1',
+        },
+        child2: {
+          'data-testid': 'Parent__child2',
+        },
+        child3: {
+          'data-testid': 'Parent__child3',
+        },
+      })
+      expect(
+        createTestIds<'child1'>('Parent', ['child1', 'child1']),
+      ).toStrictEqual({
+        child1: {
+          'data-testid': 'Parent__child1',
+        },
+      })
     })
   })
 })

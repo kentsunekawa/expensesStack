@@ -93,3 +93,23 @@ export const getlastDateOfAfterNthMonth = (
     0,
   )
 }
+
+export const createTestIds = <T extends string>(
+  parent: string,
+  children: T[],
+) => {
+  const obj = {} as {
+    [k in T]: {
+      'data-testid': string
+    }
+  }
+  children.forEach((child) => {
+    if (!obj[child]) {
+      obj[child] = {
+        'data-testid': `${parent}__${child}`,
+      }
+    }
+  })
+
+  return obj
+}
