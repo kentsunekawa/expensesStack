@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch'
 import {
   ApolloProvider as Provider,
   ApolloClient,
@@ -14,6 +15,7 @@ const cache = new InMemoryCache()
 
 const httpLink = createHttpLink({
   uri: process.env.VITE_API_URL,
+  fetch,
 })
 
 const authLink = setContext(() => ({

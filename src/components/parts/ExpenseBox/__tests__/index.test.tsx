@@ -4,7 +4,7 @@ import { Expense } from 'src/types'
 import { ExpenseBox, testIds } from '../index'
 
 describe('ExpenseBox', () => {
-  it('わかんない', () => {
+  it('情報が正しく表示される', () => {
     const expense: Expense = {
       id: '1',
       amount: 100,
