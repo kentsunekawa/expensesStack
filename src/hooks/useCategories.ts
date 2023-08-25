@@ -1,7 +1,12 @@
 import { useCallback, useMemo } from 'react'
 
 import { Stage } from 'src/operations/types.d'
-import { useGetCategoriesLazyQuery } from 'src/operations/queries/__generated__/GetCategories'
+import {
+  useGetCategoriesLazyQuery,
+  GetCategoriesQuery,
+} from 'src/operations/queries/__generated__/GetCategories'
+
+export type Category = GetCategoriesQuery['categories'][number]
 
 export const useCategories = () => {
   const [getCategories, { data, loading, error }] = useGetCategoriesLazyQuery()

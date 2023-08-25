@@ -1,6 +1,6 @@
 // import from libraries
 import 'styled-components/macro'
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback } from 'react'
 import {
   FormControl,
   Select,
@@ -15,15 +15,14 @@ import { ArrowBack as ArrowBackIcon } from '@mui/icons-material'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 // import from this project
-import { useNavigate } from 'src/router'
-import { useStyle, useCategories } from 'src/hooks'
-import { Suspense } from 'src/components/parts/Suspense'
+import { createTestIds } from 'src/utils'
+import { useStyle, Category } from 'src/hooks'
 import { CategoryBox } from 'src/components/parts/CategoryBox'
 import { Heading } from 'src/components/parts/Texts'
 import { NumButton } from './NumButton'
 import { createStyles } from './styles'
 
-type Mode = 'create' | 'edit'
+export type Mode = 'create' | 'edit'
 
 export type ExpensesInputs = {
   amount: string
@@ -32,43 +31,42 @@ export type ExpensesInputs = {
   memo: string
 }
 
-type Props = {
+export type Props = {
   inputs: ExpensesInputs | null
   mode: Mode
+  categories: Category[]
   onSubmit: (inputs: ExpensesInputs) => void
   onSubmitDelete?: () => void
+  onBack: () => void
 }
 
-const initialInputs = {
-  date: new Date(),
-  category: null,
-  memo: '',
-  amount: '0',
-}
+export const testIds = createTestIds<'amount'>('ExpenseEditor', ['amount'])
 
 export const ExpenseEditor: React.FC<Props> = ({
-  mode: _mode,
+  mode,
   inputs: _inputs,
+  categories,
   onSubmit,
   onSubmitDelete,
+  onBack,
 }) => {
-  const navigate = useNavigate()
-
   const { styles } = useStyle(createStyles)
 
-  const [inputs, setInputs] = useState<ExpensesInputs>(_inputs ?? initialInputs)
-  const [mode] = useState<Mode>(_mode)
-
-  const { categories, fetchStatus, doGetCategories } = useCategories()
+  const [inputs, setInputs] = useState<ExpensesInputs>(
+    _inputs ?? {
+      date: new Date(),
+      category: null,
+      memo: '',
+      amount: '0',
+    },
+  )
 
   const handleChangeCategory = useCallback(
     (e: SelectChangeEvent) => {
-      if (categories) {
-        setInputs((prev) => ({
-          ...prev,
-          category: categories.find(({ id }) => id === e.target.value) ?? null,
-        }))
-      }
+      setInputs((prev) => ({
+        ...prev,
+        category: categories.find(({ id }) => id === e.target.value) ?? null,
+      }))
     },
     [categories],
   )
@@ -107,10 +105,6 @@ export const ExpenseEditor: React.FC<Props> = ({
     }))
   }, [])
 
-  useEffect(() => {
-    doGetCategories()
-  }, [doGetCategories])
-
   const hanldeClickSubmitButton = useCallback(() => {
     onSubmit(inputs)
   }, [inputs, onSubmit])
@@ -120,11 +114,11 @@ export const ExpenseEditor: React.FC<Props> = ({
       <div css={styles.inner}>
         <div css={styles.row.container}>
           <div css={styles.numDisplayArea.containre}>
-            <IconButton onClick={() => navigate(-1)}>
+            <IconButton onClick={onBack}>
               <ArrowBackIcon />
             </IconButton>
             <div css={styles.numDisplayArea.numDisplay}>
-              <Heading size='h3' textAlign='right'>
+              <Heading size='h3' textAlign='right' {...testIds.amount}>
                 ¥ {Number(inputs.amount).toLocaleString()}
               </Heading>
             </div>
@@ -142,47 +136,38 @@ export const ExpenseEditor: React.FC<Props> = ({
             </FormControl>
           </div>
           <div css={styles.row.cell}>
-            <Suspense
-              {...fetchStatus}
-              loadingProps={{
-                size: 32,
-              }}
-            >
-              {categories && (
-                <FormControl fullWidth>
-                  <InputLabel id='category'>Category</InputLabel>
-                  <Select
-                    labelId='category'
-                    value={inputs.category?.id ?? ''}
-                    label='Category'
-                    onChange={handleChangeCategory}
-                    renderValue={(selectedId) => {
-                      const category = categories.find(
-                        ({ id }) => id === selectedId,
-                      )
+            <FormControl fullWidth>
+              <InputLabel id='category'>Category</InputLabel>
+              <Select
+                labelId='category'
+                value={inputs.category?.id ?? ''}
+                label='Category'
+                onChange={handleChangeCategory}
+                renderValue={(selectedId) => {
+                  const category = categories.find(
+                    ({ id }) => id === selectedId,
+                  )
 
-                      return category ? (
-                        <CategoryBox
-                          name={category.name}
-                          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                          color={category.color?.hex ?? undefined}
-                        />
-                      ) : null
-                    }}
-                  >
-                    {categories.map(({ id, name, color }) => (
-                      <MenuItem value={id} key={id}>
-                        <CategoryBox
-                          name={name}
-                          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                          color={color?.hex ?? undefined}
-                        />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-            </Suspense>
+                  return category ? (
+                    <CategoryBox
+                      name={category.name}
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                      color={category.color?.hex ?? undefined}
+                    />
+                  ) : null
+                }}
+              >
+                {categories.map(({ id, name, color }) => (
+                  <MenuItem value={id} key={id}>
+                    <CategoryBox
+                      name={name}
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                      color={color?.hex ?? undefined}
+                    />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           </div>
         </div>
         <div css={styles.row.container}>

@@ -2,11 +2,24 @@
 import 'styled-components/macro'
 
 // import from this project
+import { createTestIds } from 'src/utils'
 import { useStyle } from 'src/hooks'
 import { Heading } from 'src/components/parts/Texts'
 import { createStyles } from './styles'
 
-type Num = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '0' | '×' | 'C'
+export type Num =
+  | '1'
+  | '2'
+  | '3'
+  | '4'
+  | '5'
+  | '6'
+  | '7'
+  | '8'
+  | '9'
+  | '0'
+  | '×'
+  | 'C'
 
 export type Props = {
   notNumber?: boolean

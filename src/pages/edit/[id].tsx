@@ -4,7 +4,7 @@ import { useEffect, useCallback } from 'react'
 import { Button } from '@mui/material'
 
 import { useParams, useNavigate } from 'src/router'
-import { useStyle } from 'src/hooks'
+import { useStyle, useCategories } from 'src/hooks'
 import { Suspense } from 'src/components/parts/Suspense'
 import { Messages } from 'src/components/parts/Messages'
 import {
@@ -19,7 +19,17 @@ const Edit: React.FC = () => {
 
   const navigate = useNavigate()
   const { id } = useParams('/edit/:id')
-  const { doGetExpense, fetchStatus, expense, isNotFound } = useGetExpense()
+  const {
+    categories,
+    fetchStatus: fetchCategoriesStatus,
+    doGetCategories,
+  } = useCategories()
+  const {
+    doGetExpense,
+    fetchStatus: fetchExpenseStatus,
+    expense,
+    isNotFound,
+  } = useGetExpense()
   const { doUpdate } = useUpdateExpense(id)
   const { doDelete } = useDeleteExpense(id)
 
@@ -45,9 +55,11 @@ const Edit: React.FC = () => {
     doGetExpense(id)
   }, [id, doGetExpense])
 
+  useEffect(doGetCategories, [doGetCategories])
+
   return (
     <Suspense
-      {...fetchStatus}
+      {...fetchExpenseStatus}
       loadingProps={{
         minHeight: 300,
       }}
@@ -59,16 +71,23 @@ const Edit: React.FC = () => {
           </div>
         </Messages.Empty>
       ) : (
-        <>
-          {expense && (
+        <Suspense
+          {...fetchCategoriesStatus}
+          loadingProps={{
+            minHeight: 300,
+          }}
+        >
+          {expense && categories && (
             <ExpenseEditor
               mode='edit'
               inputs={expense}
+              categories={categories}
               onSubmit={handleSubmit}
               onSubmitDelete={handleSubmitDelete}
+              onBack={() => navigate(-1)}
             />
           )}
-        </>
+        </Suspense>
       )}
     </Suspense>
   )

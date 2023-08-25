@@ -8,3 +8,4 @@ export { useCategories } from './useCategories'
 export { usePublishExpense } from './usePublishExpense'
 
 export type { StyleBaseData } from './useStyle'
+export type { Category } from './useCategories'
