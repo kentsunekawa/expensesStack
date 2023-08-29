@@ -1,4 +1,4 @@
-import { logRoles, screen } from '@testing-library/react'
+import { getByRole, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { render } from 'src/tests/utils'
@@ -29,7 +29,7 @@ const categories: Category[] = [
     },
   },
   {
-    id: '2',
+    id: '3',
     name: 'category2',
   },
 ]
@@ -87,6 +87,12 @@ describe('ExpenseEditor', () => {
       expect(
         screen.getByPlaceholderText<HTMLInputElement>('YYYY/MM/DD').value,
       ).toBe('2023/11/10')
+
+      expect(
+        screen
+          .getByTestId(testIds.category['data-testid'])
+          .querySelector('input')?.value ?? 'unexist',
+      ).toBeFalsy()
       expect(screen.getByLabelText<HTMLInputElement>('Memo').value).toBe('')
       expect(
         screen.getByRole('button', { name: 'Register' }),
@@ -95,7 +101,40 @@ describe('ExpenseEditor', () => {
         screen.queryByRole('button', { name: 'Delete' }),
       ).not.toBeInTheDocument()
     })
-    it('数字入力が正しくできる', async () => {
+
+    it('編集の初期状態の表示が正しい', async () => {
+      const initialInputs: ExpensesInputs = {
+        amount: '1000',
+        category: categories[1],
+        date: new Date(2023, 9, 10, 0, 0, 0),
+        memo: 'This is a memo.',
+      }
+
+      const {
+        renderResult: { container },
+      } = setUp('edit', initialInputs)
+
+      expect(
+        screen.getByTestId(testIds.amount['data-testid']).textContent,
+      ).toBe('¥ 1,000')
+      expect(
+        screen.getByPlaceholderText<HTMLInputElement>('YYYY/MM/DD').value,
+      ).toBe('2023/10/10')
+      expect(
+        screen
+          .getByTestId(testIds.category['data-testid'])
+          .querySelector('input')?.value ?? 'unexist',
+      ).toBe(initialInputs.category?.id)
+      expect(screen.getByLabelText<HTMLInputElement>('Memo').value).toBe(
+        initialInputs.memo,
+      )
+      expect(screen.getByRole('button', { name: 'Update' })).toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: 'Delete' }),
+      ).toBeInTheDocument()
+    })
+
+    it('入力値が変更できる', async () => {
       const {
         renderResult: { container },
       } = setUp('create')
@@ -134,6 +173,29 @@ describe('ExpenseEditor', () => {
       expect(
         screen.getByTestId(testIds.amount['data-testid']).textContent,
       ).toBe('¥ 0')
+
+      const button = getByRole(
+        screen.getByTestId(testIds.category['data-testid']),
+        'button',
+      )
+      await user.click(button)
+
+      const options = screen.getAllByTestId(
+        testIds.categoryMenuItem['data-testid'],
+      )
+      expect(options[0]).toHaveAttribute('data-value', categories[0].id)
+      expect(options[1]).toHaveAttribute('data-value', categories[1].id)
+      expect(options[2]).toHaveAttribute('data-value', categories[2].id)
+      const selectedOption = options[2]
+      await user.click(selectedOption)
+      expect(
+        screen
+          .getByTestId(testIds.category['data-testid'])
+          .querySelector('input')?.value ?? 'unexist',
+      ).toBe(selectedOption.getAttribute('data-value'))
+      console.log(screen.getAllByText(categories[2].name))
+
+      // expect(screen.getByText(categories[2].name)).toBeInTheDocument()
     })
   })
 })

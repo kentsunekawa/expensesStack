@@ -40,7 +40,9 @@ export type Props = {
   onBack: () => void
 }
 
-export const testIds = createTestIds<'amount'>('ExpenseEditor', ['amount'])
+export const testIds = createTestIds<
+  'amount' | 'category' | 'categoryMenuItem'
+>('ExpenseEditor', ['amount', 'category', 'categoryMenuItem'])
 
 export const ExpenseEditor: React.FC<Props> = ({
   mode,
@@ -139,6 +141,7 @@ export const ExpenseEditor: React.FC<Props> = ({
             <FormControl fullWidth>
               <InputLabel id='category'>Category</InputLabel>
               <Select
+                {...testIds.category}
                 labelId='category'
                 value={inputs.category?.id ?? ''}
                 label='Category'
@@ -158,7 +161,7 @@ export const ExpenseEditor: React.FC<Props> = ({
                 }}
               >
                 {categories.map(({ id, name, color }) => (
-                  <MenuItem value={id} key={id}>
+                  <MenuItem value={id} key={id} {...testIds.categoryMenuItem}>
                     <CategoryBox
                       name={name}
                       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
