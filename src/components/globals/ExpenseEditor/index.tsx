@@ -41,8 +41,14 @@ export type Props = {
 }
 
 export const testIds = createTestIds<
-  'amount' | 'category' | 'categoryMenuItem'
->('ExpenseEditor', ['amount', 'category', 'categoryMenuItem'])
+  'amount' | 'category' | 'categoryMenuItem' | 'backButton' | 'datePicker'
+>('ExpenseEditor', [
+  'amount',
+  'category',
+  'categoryMenuItem',
+  'backButton',
+  'datePicker',
+])
 
 export const ExpenseEditor: React.FC<Props> = ({
   mode,
@@ -116,7 +122,7 @@ export const ExpenseEditor: React.FC<Props> = ({
       <div css={styles.inner}>
         <div css={styles.row.container}>
           <div css={styles.numDisplayArea.containre}>
-            <IconButton onClick={onBack}>
+            <IconButton onClick={onBack} {...testIds.backButton}>
               <ArrowBackIcon />
             </IconButton>
             <div css={styles.numDisplayArea.numDisplay}>
@@ -134,6 +140,8 @@ export const ExpenseEditor: React.FC<Props> = ({
                 label='Date'
                 value={inputs.date}
                 onChange={handleChangeDate}
+                views={['year', 'month', 'day']}
+                {...testIds.datePicker}
               />
             </FormControl>
           </div>
