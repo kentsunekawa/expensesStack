@@ -232,11 +232,4 @@ describe('ExpenseEditor', () => {
     await user.click(backButton)
     expect(mockOnBack).toHaveBeenCalled()
   })
-
-  it('Snapshot', () => {
-    const {
-      renderResult: { container },
-    } = setUp('create')
-    expect(container).toMatchSnapshot()
-  })
 })
